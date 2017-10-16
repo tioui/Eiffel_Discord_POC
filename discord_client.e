@@ -27,7 +27,7 @@ feature {NONE} -- Initialization
 			Config_Is_Json: a_config.API_encoding ~ "json"
 		do
 			config := a_config
-			create {LIBCURL_HTTP_CLIENT_SESSION}rest_session.make(config.API_url)
+			create {NET_HTTP_CLIENT_SESSION}rest_session.make(config.API_url)
 			rest_session.add_header ("user-agent", "DiscordBot (" + config.Library_url + ", v" + config.Library_version + ")")
 			create message_create_actions
 		ensure
@@ -66,7 +66,7 @@ feature -- Access
 			l_json_parser:JSON_PARSER
 			l_gateway:DISCORD_GATEWAY
 		do
-			l_response := rest_session.get ("/gateway/bot", Void)
+			l_response := rest_session.get ("/gateway" + gateway_sufix, Void)
 			if attached l_response.body as la_json then
 				create l_json_parser.make_with_string (la_json)
 				l_json_parser.parse_content
@@ -85,7 +85,12 @@ feature -- Access
 	message_create_actions:ACTION_SEQUENCE[TUPLE[user, message:READABLE_STRING_GENERAL]]
 			-- When `Current' received a message
 
-feature -- Implementation
+feature {NONE} -- Implementation
+
+	gateway_sufix:STRING
+			-- The sufix to add to the gateway URL.
+		deferred
+		end
 
 	rest_session:HTTP_CLIENT_SESSION
 			-- The session used to send information to the API server

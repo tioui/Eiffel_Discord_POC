@@ -25,4 +25,9 @@ feature -- Access
 			login_client("Bot", a_token)
 		end
 
+feature {NONE} -- Implementation
+
+	gateway_sufix:STRING = "/bot"
+			-- <Precursor>
+
 end

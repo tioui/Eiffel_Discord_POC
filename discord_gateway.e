@@ -61,6 +61,7 @@ feature {NONE} -- Implementation
 			l_json_parser:JSON_PARSER
 			l_opcode:INTEGER_64
 		do
+			-- print(a_message + "%N")
 			create l_json_parser.make_with_string (a_message)
 			l_json_parser.parse_content
 			if
